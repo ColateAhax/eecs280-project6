@@ -374,7 +374,8 @@ private:
     //base case where the node is empty
     if (!node) return nullptr;
 
-    return new Node{node->datum, copy_nodes_impl(node->left), copy_nodes_impl(node->right)};
+    return new Node{node->datum, copy_nodes_impl(node->left), 
+                                 copy_nodes_impl(node->right)};
   }
 
   // EFFECTS: Frees the memory for all nodes used in the tree rooted at 'node'.
