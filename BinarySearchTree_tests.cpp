@@ -41,6 +41,7 @@ TEST(size)
 TEST(height)
 {
     BinarySearchTree<int> tree;
+    ASSERT_EQUAL(tree.height(), 0);
     tree.insert(5);
     ASSERT_EQUAL(tree.height(), 1);
     tree.insert(1);
@@ -87,6 +88,12 @@ TEST(copy_nodes)
     tree.traverse_preorder(oss_preorder_copy);
 
     ASSERT_EQUAL(oss_preorder_og.str(), oss_preorder_copy.str());
+
+    tree_copy.insert(100);
+    oss_preorder_og.str("");
+    tree.traverse_preorder(oss_preorder_og);
+    ASSERT_TRUE(oss_preorder_og.str() == "5 1 3 2 4 6 8 7 10 9 ");
+
 }
 
 
@@ -97,6 +104,7 @@ TEST(copy_nodes)
 TEST(find)
 {
     BinarySearchTree<int> tree;
+    ASSERT_EQUAL(tree.find(5), tree.end());
     tree.insert(5);
     tree.insert(1);
     tree.insert(3);
@@ -127,6 +135,7 @@ TEST(find)
 TEST(min_element)
 {
     BinarySearchTree<int> tree;
+    ASSERT_EQUAL(tree.min_element(), tree.end());
     tree.insert(5);
     ASSERT_EQUAL(*tree.min_element(), 5);
 
@@ -157,6 +166,7 @@ TEST(min_element)
 TEST(max_element)
 {
     BinarySearchTree<int> tree;
+    ASSERT_EQUAL(tree.max_element(), tree.end());
     tree.insert(5);
     ASSERT_EQUAL(*tree.max_element(), 5);
 
@@ -197,6 +207,9 @@ TEST(check_sorting_invariant)
     tree.insert(7);
     tree.insert(9);
     ASSERT_TRUE(tree.check_sorting_invariant());
+
+    *tree.begin() = 99;
+    ASSERT_FALSE(tree.check_sorting_invariant());
 }
 
   
@@ -319,6 +332,7 @@ TEST(traverse_preorder)
 TEST(min_greater_than)
 {
     BinarySearchTree<int> tree;
+    ASSERT_EQUAL(tree.min_greater_than(5), tree.end());
     tree.insert(5);
     tree.insert(1);
     ASSERT_EQUAL(*tree.min_greater_than(1), 5);
@@ -391,6 +405,22 @@ TEST(min_greater_than)
     ASSERT_EQUAL(*tree.min_greater_than(8), 9);
     ASSERT_EQUAL(*tree.min_greater_than(9), 10);
     ASSERT_EQUAL(tree.min_greater_than(10), tree.end());
+}
+
+TEST(single_node)
+{
+    BinarySearchTree<int> tree;
+    tree.insert(1);
+    ASSERT_EQUAL(tree.size(), 1);
+    ASSERT_EQUAL(tree.height(), 1);
+    ASSERT_FALSE(tree.empty());
+    ASSERT_EQUAL(*tree.min_element(), 1);
+    ASSERT_EQUAL(*tree.max_element(), 1);
+    ASSERT_EQUAL(*tree.find(1), 1);
+    ASSERT_EQUAL(tree.find(0), tree.end());
+    ASSERT_EQUAL(tree.min_greater_than(1), tree.end());
+    ASSERT_EQUAL(*tree.min_greater_than(0), 1);
+    ASSERT_TRUE(tree.check_sorting_invariant());
 }
 
 TEST_MAIN()
